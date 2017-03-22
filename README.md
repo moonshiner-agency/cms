@@ -8,11 +8,11 @@ It is tough to add CMS functionality to an existing Laravel Application. It feel
 
 To get started, install Passport via the Composer package manager:
 
-`composer require moonshiner/laravel-cms`
+`composer require moonshiner-agency/cms`
 
 Next, register the Laravel CMS service provider in the providers array of your config/app.php configuration file:
 
-`Moonshiner\LaravelCMS\CmsServiceProvider::class`
+`Moonshiner\Cms\CmsServiceProvider::class`
 
 The CMS service provider registers its own database migration directory with the framework, so you should migrate your database after registering the provider. The CMS migrations will create the tables your application needs to store Categories, Content and Content Meta:
 
@@ -20,7 +20,7 @@ The CMS service provider registers its own database migration directory with the
 
 To publish the config file for the CMS do an vendor:publish
 
-`php artisan vendor:publish --tag=cms-config`
+`php artisan vendor:publish --provider="Moonshiner\Cms\CmsServiceProvider"`
 
 You should call the Cms::routes method within the boot method of your RouteServiceProvider. This method will add the CMS Pieces necessary to render the correct content on one view.
 
@@ -32,7 +32,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Moonshiner\LaravelCms\Cms;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -54,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Cms::routes();
+        \Moonshiner\Cms\Cms::routes();
     }
 ```
 
@@ -64,7 +63,7 @@ In order to use the Cms Vue components, you must be using the Vue JavaScript fra
 
 To publish the Passport Vue components, use the vendor:publish Artisan command:
 
-`php artisan vendor:publish --tag=cms-components`
+`php artisan vendor:publish --provider="Moonshiner\Cms\CmsServiceProvider"`
 
 The published components will be placed in your resources/assets/js/components directory. Once the components have been published, you should register them in your  resources/assets/js/app.js file:
 
