@@ -3,7 +3,7 @@
 namespace Moonshiner\Cms\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Moonshiner\Post;
+use Moonshiner\Cms\Post;
 
 class CmsController
 {

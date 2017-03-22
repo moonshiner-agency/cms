@@ -41,7 +41,7 @@ class RouteRegistrar
      */
     public function forPosts()
     {
-        $this->router->group(['middleware' => ['web', 'auth']], function ($router) {
+        $this->router->group(['middleware' => ['web']], function ($router) {
             
             // get list of pages
             $router->get('/pages', [

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-It is tough to add CMS functionality to an existing Laravel Application. It feels that everytime you have to setup your content types and parameters seperately. This library is in out-of-the-box CMS module, that is easily integrated and logic to handle by Development. The Architecture, Structures and Interface are based on the Wordpress Architecture.
+It is tough to add CMS functionality to an existing Laravel Application. It feels that everytime you have to setup your content types and parameters seperately. This library is in out-of-the-box CMS module, that is easily integrated and logic to handle by Development. The Design is kept close to the Wordpress template (to calm the user), the rest is done properly in one extra table. This projects wants to make things easier.
 
 ## Installation
 
@@ -53,6 +53,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        //Set the backend Routes
         \Moonshiner\Cms\Cms::routes();
     }
 ```
