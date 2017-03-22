@@ -3,110 +3,53 @@
 namespace Moonshiner\Cms\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Laravel\Passport\Client;
-use Laravel\Passport\ClientRepository;
-use Illuminate\Database\Eloquent\Model;
+use Moonshiner\Post;
 
-class ClientController
+class CmsController
 {
-    /**
-     * The client repository instance.
+     /**
+     * Display a listing of the resource.
      *
-     * @var ClientRepository
+     * @return \Illuminate\Http\Response
      */
-    protected $clients;
-
-    /**
-     * The validation factory implementation.
-     *
-     * @var ValidationFactory
-     */
-    protected $validation;
-
-    /**
-     * Create a client controller instance.
-     *
-     * @param  ClientRepository  $clients
-     * @param  ValidationFactory  $validation
-     * @return void
-     */
-    public function __construct(ClientRepository $clients,
-                                ValidationFactory $validation)
+    public function index()
     {
-        $this->clients = $clients;
-        $this->validation = $validation;
+        return Post::all();
     }
 
     /**
-     * Get all of the clients for the authenticated user.
+     * Store a newly created resource in storage.
      *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function forUser(Request $request)
-    {
-        $userId = $request->user()->getKey();
-
-        return $this->clients->activeForUser($userId)->makeVisible('secret');
-    }
-
-    /**
-     * Store a new client.
-     *
-     * @param  Request  $request
-     * @return Response
+     * @param  Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $this->validation->make($request->all(), [
-            'name' => 'required|max:255',
-            'redirect' => 'required|url',
-        ])->validate();
-
-        return $this->clients->create(
-            $request->user()->getKey(), $request->name, $request->redirect
-        )->makeVisible('secret');
+        return Post::create($request->all());
     }
 
     /**
-     * Update the given client.
+     * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  string  $clientId
-     * @return Response
+     * @param  Illuminate\Http\Request $request
+     * @param  Moonshiner\Post $post
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $clientId)
+    public function update(Request $request, $post_id)
     {
-        if (! $request->user()->clients->find($clientId)) {
-            return new Response('', 404);
-        }
-
-        $this->validation->make($request->all(), [
-            'name' => 'required|max:255',
-            'redirect' => 'required|url',
-        ])->validate();
-
-        return $this->clients->update(
-            $request->user()->clients->find($clientId),
-            $request->name, $request->redirect
-        );
+        $post = Post::findOrFail($post_id);
+        return $post->update($request->all());
     }
 
     /**
-     * Delete the given client.
+     * Remove the specified resource from storage.
      *
-     * @param  Request  $request
-     * @param  string  $clientId
-     * @return Response
+     * @param  Moonshiner\Post $post
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $clientId)
+    public function destroy($post_id)
     {
-        if (! $request->user()->clients->find($clientId)) {
-            return new Response('', 404);
-        }
-
-        $this->clients->delete(
-            $request->user()->clients->find($clientId)
-        );
+        $post = Post::findOrFail($post_id);
+        return $post->delete();
     }
 }

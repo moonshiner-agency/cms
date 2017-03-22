@@ -84,16 +84,23 @@ After registering the components, make sure to run npm run dev to recompile your
 The CMS System allows to select different templates per Detailpage. To enable the Views to be selectable in the backend you need to define them in the config/cms.php configuration File.
 
 ```
-'detailviews' => [
-  'Default' => 'resources/views/frontend/default.php',
-  'Special' => 'resources/views/frontend/special.php'
+'templates' => [
+    'default' => [
+        'name' => 'Standardtemplate',
+        'path' => 'frontend.app',
+        'additional_fields' => [
+            'subheader' => 'string',
+            'count' => 'number',
+            'email' => 'email',
+            'gallery' => [
+                'image' => 'image'
+            ]
+        ]
+    ]
 ],
-'overViews' => [
-  'Default' => 'resources/views/frontend/overview.php'
-]
 ```
 
-The *Detailview* is used for rendering a single Content Element, the *Overview* is used for rendering a Category, that has Many Content Elements.
+The *Detailview* is used for rendering a single Content Element, in the additional fields the structure and additional fields for that template is defined. If one of the entries is an array, an unlimited number of entries is possible. This can be used for Lists or Galleries.
 
 Those Views will be the Views, that you should change and adapt to your application. In those views you have a `$cms` Variable available to use. This variable will be filled with the content, in the backend.
 
