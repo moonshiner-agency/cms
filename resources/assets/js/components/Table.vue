@@ -27,20 +27,32 @@
 
 <template>
   <table>
+    <colgroup>
+       <col span="1" style="width: 10%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 45%;">
+       <col span="1" style="width: 15%;">
+       <col span="1" style="width: 15%;">
+    </colgroup>
     <thead>
       <tr>
-        <td id="cb" class="manage-column column-cb check-column"></td>
-        <th scope="col" id="thumb column-comments" class="manage-column column-thumb column-comments">Image</th>
-        <th scope="col" id="title" class="manage-column column-title column-primary sortable desc">Title</a></th>
-        <th scope="col" id="author" class="manage-column column-author">Author</th>
-        <th scope="col" id="date" class="manage-column column-date sortable asc"><a href="http://wiener-online.at/wp-admin/edit.php?orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
+        <td></td>
+        <th>Image</th>
+        <th>Title</a></th>
+        <th>Author</th>
+        <th>Date</th>
       </tr>
     </thead>
     <tbody>
-      <TableRow v-for="token in tokens"></TableRow>
+      <TableRow 
+        v-for="(post, index) in posts" 
+        :post="post" 
+        :key="post.id"
+        :changeRoute="changeRoute"
+      ></TableRow>
     </tbody>
   </table>
-</template>
+</template> 
 
 <script> 
 
@@ -50,9 +62,9 @@
     /*
     * The component's data.
     */
+    props: ['posts', 'changeRoute'],
     data: function() {
       return {
-        tokens: [1,2,3,4,5,6,7]
       };
     },
     components: {

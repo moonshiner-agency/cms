@@ -20,7 +20,7 @@
       </a>
     </span>
     <span id="edit-slug-buttons">
-      <button type="button" class="cms-button-s">Bearbeiten</button>
+      <button type="button" class="button">Bearbeiten</button>
     </span>
   </div>
 </template>
