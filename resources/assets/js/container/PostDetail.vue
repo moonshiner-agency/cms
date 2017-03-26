@@ -11,18 +11,24 @@
           <input type="text" v-model="currentPost.title">
         </div>
         <Permalink />
+        <textarea v-model="currentPost.main_content"></textarea>
       </div>
 
       <template v-if="templateStructure != null">
         <Panel
-          :headline="group.name"
-          v-for="group in templateStructure.additional_fields"
-          key="group.name">
+          :headline="templateGroup.name"
+          v-for="templateGroup in templateStructure.additional_fields"
+          key="templateGroup.name">
             <AdditionalField
-              v-bind:content="currentPost.content[group.name]"
-              v-bind:template="group"
-              @changed="content => { 
-                currentPost.content[group.name] = content;
+              v-bind:content="currentPost.content[templateGroup.name]"
+              v-bind:template="templateGroup"
+              @changed="newContent => { 
+                // copy content
+                const mycontent = JSON.parse(JSON.stringify(currentPost.content));
+                // add parameter 
+                mycontent[templateGroup.name] = newContent;
+                //update the current post
+                currentPost.content = mycontent;
               }"
             /> 
         </Panel>
@@ -120,27 +126,32 @@
       };
     },
     watch: {
-        'post': function (val, oldVal) {
+        "post": function (val, oldVal) {
 
           if(!val) {
             this.currentPost = {};
             this.initialPost = {};
           }
-
+        },
+        "currentPost.template": function (val, oldVal) {
+          this.changeTemplate(val);
         }
     },
     mounted: function() {
       if(this.post) {
         //when initiated and a post was given
         //use it to load all info about current post
-        fetch('GET', 'post.json', this.postLoaded);
+        fetch('GET', `pages/${this.post.id}`, this.postLoaded);
+      } else {
+        //fresh Page
+        this.postLoaded({template: 'default'});
       }
     },
     methods: {
       postLoaded: function(data) {
         this.currentPost = data;
         this.initialPost = data;
-        this.templateStructure = this.templates.find(x => x.id === data.template);
+        this.changeTemplate(data.template)
       },
       link: function(route, post) {
 
@@ -151,15 +162,17 @@
 
         // if you changed something ask before leaving
         } else if(
-          JSON.stringify(this.currentPost) != JSON.stringify(this.initialPost)) {
+          JSON.stringify(this.currentPost) != JSON.stringify(this.initialPost)) 
+        {
           if(!confirm('You did some changes that are not saved yet, are you sure you want to continue?'))
             return;
         }
 
-        
-
         // change to new page
         this.changeRoute(route, post);
+      },
+      changeTemplate: function(template){
+        this.templateStructure = this.templates.find(x => x.id === template);
       }
     },
     components: {
@@ -189,6 +202,11 @@
       outline: 0;
       margin: 0 0 3px;
       background-color: #fff;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 300px;
     }
 
     .main {

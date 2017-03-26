@@ -13,14 +13,17 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cms_posts', function (Blueprint $table) {
+        Schema::create('moonshinecms_posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('post_author')->unsigned();
-            $table->dateTime('post_date');
-            $table->text('post_content');
-            $table->text('post_title');
+            $table->string('author')->nullable();
+            $table->dateTime('published_at')->default(date("Y-m-d H:i:s"));
+            $table->text('main_content')->nullable();
+            $table->text('content')->nullable();
+            $table->string('title');
+            $table->string('slug');
             $table->string('post_status', 20)->default('published');
-            $table->text('post_structure');
+            $table->string('visibility', 20)->default('public');
+            $table->string('template');
             $table->timestamps();
         });
     }
@@ -32,6 +35,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('cms_posts');
+        Schema::drop('moonshinecms_posts');
     }
 }

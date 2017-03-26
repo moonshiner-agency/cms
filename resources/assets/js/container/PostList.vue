@@ -4,7 +4,7 @@
   <div>
     <div>
       <h1 class="headline">Posts</h1>
-      <a class="button primary" v-on:click="modus = 'detail'">Add New</a>
+      <a class="button primary" @click="changeRoute('create')">Add New</a>
       <hr />
       <PostFilter />
       <Search />

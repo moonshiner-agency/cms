@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:8080/static/api/';
+export const BASE_URL = 'http://cms.dev/moonshiner/';
 
 export function fetch(type, uri, callback, param) {
 

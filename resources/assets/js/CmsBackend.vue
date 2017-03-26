@@ -46,7 +46,7 @@
     },
     mounted: function () {
       // get the posts
-      fetch('GET', 'posts.json', this.postsLoaded);
+      fetch('GET', 'pages', this.postsLoaded);
     },
     methods: {
       postsLoaded: function(data) {

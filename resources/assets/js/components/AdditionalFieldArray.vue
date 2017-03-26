@@ -1,3 +1,49 @@
+<style scoped>
+    input {
+        width: 100%;
+    }
+    input.withLabel {
+        margin-bottom: 10px;
+    }
+
+    table {
+        table-layout: fixed;
+        background: #fff;
+        border-spacing: 0;
+        width: 100%;
+        clear: both;
+        margin: 0;
+    }
+
+    thead {
+        text-align: left;
+        font-size: 12px;
+        text-transform:capitalize;
+    }
+
+    .action {
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-radius: 100%;
+        background: #ccc;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        line-height: 14px;
+        text-decoration: none;
+        cursor: pointer;
+
+        transition: 500ms background ease-in-out;
+    }
+
+    .action:hover {
+        background: red;
+
+    }
+</style>
+
+
 <template>
     <div>
         <div v-if="template.type.constructor === Array">
@@ -16,12 +62,13 @@
                             <AdditionalField
                               v-bind:content="localContent[templatePart.name]"
                               v-bind:template="templatePart"    
-                              @changed="newContent => {
+                              @changed="newContent => { 
 
-                                const mycontent = JSON.parse(JSON.stringify(content));
-                                mycontent[index][templatePart.name] = newContent;
+                                //update full content
+                                content[index][templatePart.name] = newContent;
 
-                                updateValue(mycontent);
+                                //send all content back
+                                updateValue(content);
                               }"
                             /> 
                         </td>
@@ -68,21 +115,15 @@
         // method is used to format and place constraints
         // on the input's value
         updateValue: function (value) {
-          
           // Emit the number value through the input event
           this.$emit('changed', value);
         },
         addRow: function(template) {
 
-            console.log('Add row');
-            console.log(template);
-
             //somehow we need to use two way binding it seems
             //@todo: do it more proper
             //if i only to updateValue it will not go back down it seems
-            const content = this.content || [];
-
-            console.log(content);
+            this.content = this.content || [];
 
             // prepare new object
             const freshContent = {};
@@ -92,53 +133,9 @@
             }
             
             // add to content array
-            content.push(freshContent);
-            this.updateValue(content);
+            this.content.push(freshContent);
+            this.updateValue(this.content);
         }
     }
   }
 </script>
-<style scoped>
-    input {
-        width: 100%;
-    }
-    input.withLabel {
-        margin-bottom: 10px;
-    }
-
-    table {
-        table-layout: fixed;
-        background: #fff;
-        border-spacing: 0;
-        width: 100%;
-        clear: both;
-        margin: 0;
-    }
-
-    thead {
-        text-align: left;
-        font-size: 12px;
-        text-transform:capitalize;
-    }
-
-    .action {
-        width: 16px;
-        height: 16px;
-        display: block;
-        border-radius: 100%;
-        background: #ccc;
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-        line-height: 14px;
-        text-decoration: none;
-        cursor: pointer;
-
-        transition: 500ms background ease-in-out;
-    }
-
-    .action:hover {
-        background: red;
-
-    }
-</style>

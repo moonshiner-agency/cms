@@ -11,7 +11,7 @@ class Post extends Model
      *
      * @var string
      */
-    protected $table = 'cms_posts';
+    protected $table = 'moonshinecms_posts';
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -52,5 +52,10 @@ class Post extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function getContentAttribute()
+    {
+        return ($this->attributes['content'] ? $this->attributes['content'] : (object)[]);
+    }
 
 }

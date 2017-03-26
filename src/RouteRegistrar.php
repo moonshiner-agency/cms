@@ -67,6 +67,11 @@ class RouteRegistrar
             $router->delete('/pages/{post}', [
                 'uses' => 'CmsController@destroy',
             ]);
+
+            // delete Page
+            $router->get('/helper', [
+                'uses' => 'CmsController@helper',
+            ]);
         });
     }
 }
