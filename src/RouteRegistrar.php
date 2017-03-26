@@ -44,33 +44,33 @@ class RouteRegistrar
         $this->router->group(['middleware' => ['web']], function ($router) {
             
             // get list of pages
+            $router->get('/templates', [
+                'uses' => 'CmsController@templates',
+            ]);
+
+            // get list of pages
             $router->get('/pages', [
                 'uses' => 'CmsController@index',
             ]);
 
             // get details of Page
-            $router->get('/pages/{post}', [
+            $router->get('/pages/{post_id}', [
                 'uses' => 'CmsController@show',
             ]);
 
             // create Page
-            $router->post('/pages/{post}/create', [
-                'uses' => 'CmsController@create',
+            $router->post('/pages/create', [
+                'uses' => 'CmsController@store',
             ]);
 
             // update Page
-            $router->post('/pages/{post}/edit', [
+            $router->put('/pages/{post_id}', [
                 'uses' => 'CmsController@update',
             ]);
 
             // delete Page
-            $router->delete('/pages/{post}', [
+            $router->delete('/pages/{post_id}', [
                 'uses' => 'CmsController@destroy',
-            ]);
-
-            // delete Page
-            $router->get('/helper', [
-                'uses' => 'CmsController@helper',
             ]);
         });
     }

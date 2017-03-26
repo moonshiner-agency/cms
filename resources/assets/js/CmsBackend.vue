@@ -46,14 +46,12 @@
     },
     mounted: function () {
       // get the posts
-      fetch('GET', 'pages', this.postsLoaded);
+      fetch('GET', 'templates', this.templatesLoaded);
     },
     methods: {
-      postsLoaded: function(data) {
-
-        // the callback for the posts loaded
-        this.posts = data.posts;
-        this.templates = data.templates;
+      templatesLoaded: function(data) {
+        // the callback for the templates loaded
+        this.templates = data;
       },
       changeRoute: function(route, post)
       {

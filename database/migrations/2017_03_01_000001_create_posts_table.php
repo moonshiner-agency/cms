@@ -21,6 +21,7 @@ class CreatePostsTable extends Migration
             $table->text('content')->nullable();
             $table->string('title');
             $table->string('slug');
+            $table->string('featured_image')->nullable();
             $table->string('post_status', 20)->default('published');
             $table->string('visibility', 20)->default('public');
             $table->string('template');

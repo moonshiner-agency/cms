@@ -21,13 +21,29 @@
   import PostFilter from '../components/Filter';
   import Search from '../components/Search';
 
+  import {fetch} from '../config';
+
   export default {
     /*
     * The component's data.
     */
-    props: ['posts', 'changeRoute'],
+    props: ['changeRoute'],
     data: function() {
-      return {};
+      return {
+        // data
+        posts: []
+      };
+    },
+    mounted: function () {
+      // get the posts
+      fetch('GET', 'pages', this.postsLoaded);
+    },
+    methods: {
+      postsLoaded: function(data) {
+
+        // the callback for the posts loaded
+        this.posts = data;
+      }
     },
     components: {
       CmsTable,

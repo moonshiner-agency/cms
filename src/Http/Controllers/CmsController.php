@@ -7,6 +7,16 @@ use Moonshiner\Cms\Post;
 
 class CmsController
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function templates()
+    {
+        return response()->json(config('cms.templates'));
+    }
+
      /**
      * Display a listing of the resource.
      *
@@ -14,12 +24,9 @@ class CmsController
      */
     public function index()
     {
-        $output = [];
+        $posts = Post::all(['id', 'featured_image', 'title', 'author', 'published_at']);
 
-        $output['posts'] = Post::all();
-        $output['templates'] = config('cms.templates');
-
-        return response()->json($output);
+        return response()->json($posts);
     }
 
     /**
@@ -30,9 +37,9 @@ class CmsController
      */
     public function show(Request $request, $post_id)
     {
-        $post = Post::findOrFail($post_id);
-
-        return response()->json($post);
+        $output = [];
+        $output['post'] = Post::findOrFail($post_id);
+        return response()->json($output);
     }
 
     /**
@@ -43,7 +50,12 @@ class CmsController
      */
     public function store(Request $request)
     {
-        return Post::create($request->all());
+        $post = Post::create($request->all());
+
+        $output['post'] = $post;
+        $output['msg'] = 'Erfolgreich gespeichert.';
+
+        return response()->json($output);
     }
 
     /**
@@ -56,7 +68,12 @@ class CmsController
     public function update(Request $request, $post_id)
     {
         $post = Post::findOrFail($post_id);
-        return $post->update($request->all());
+        $post->update($request->all());
+
+        $output['post'] = $post;
+        $output['msg'] = 'Update erfolgreich';
+
+        return response()->json($output);
     }
 
     /**
@@ -69,27 +86,5 @@ class CmsController
     {
         $post = Post::findOrFail($post_id);
         return $post->delete();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Moonshiner\Post $post
-     * @return \Illuminate\Http\Response
-     */
-    public function helper()
-    {
-        for($i=0; $i < 5; $i++) {
-            $post = new Post;
-            $post->author = "Flo";
-            $post->title = "New".$i;
-            $post->main_content = null;
-            $post->content = null;
-            $post->slug = "yo-yo-yo-".$i;
-            $post->template = "test";
-            $post->save();
-        }
-        //$post = Post::findOrFail($post_id);
-        //return $post->delete();
     }
 }

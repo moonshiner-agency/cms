@@ -22,6 +22,7 @@ export function fetch(type, uri, callback, param) {
   //prep Request
   xhr.open(type, BASE_URL + uri + '?lol=' + Math.random());
   xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('X-CSRF-TOKEN', window.csrfToken);
   
   xhr.onload = function() {
 

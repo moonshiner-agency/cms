@@ -10,7 +10,7 @@
         <div class="title">
           <input type="text" v-model="currentPost.title">
         </div>
-        <Permalink />
+        <Permalink :slug="currentPost.slug" :updateSlug="newSlug => { currentPost.slug = newSlug }" />
         <textarea v-model="currentPost.main_content"></textarea>
       </div>
 
@@ -42,9 +42,18 @@
         headline="Publish">
 
         <CmsOption 
+          parameter="Author"
+          :status="currentPost.author">
+          <input 
+            slot="input" 
+            type="text"
+            v-model="currentPost.author">
+        </CmsOption>
+
+        <CmsOption 
           parameter="Status"
-          :status="currentPost.status">
-          <select v-model="currentPost.status" slot="input">
+          :status="currentPost.post_status">
+          <select v-model="currentPost.post_status" slot="input">
             <option value="published">Published</option>
             <option value="draft">Draft</option>
           </select>
@@ -69,7 +78,9 @@
         </CmsOption>
 
         <template slot="footer">
-          <a href="#" class="trash">Move to trash</a> <a class="button primary right">Update</a>
+          <a href="#" class="trash">Move to trash</a> 
+          <a class="button primary right" @click="updatePost" v-show="post">Update</a>
+          <a class="button primary right" @click="savePost" v-show="!post">Speichern</a>
           <div class="clear"></div>
         </template>
 
@@ -93,6 +104,11 @@
       <!-- END Template Box -->
 
     </div>
+    <Overlay v-show="msg">
+      <p>{{ msg }}</p>
+      <a class="button" @click="closeOverlay">Cancel</a>
+      <a class="button primary right" @click="link('list')">Zur Übersicht</a>
+    </Overlay>
   </article>
   <!-- END Rendering of List -->
 </template>
@@ -101,6 +117,7 @@
 
   import AdditionalField from '../components/AdditionalField';
   import CmsOption from '../components/Option';
+  import Overlay from '../components/Overlay';
   import Permalink from '../components/Permalink';
   import Panel from '../components/Panel';
   import Sidebar from './Sidebar';
@@ -123,6 +140,7 @@
           visibility: false,
           publishdate: false,
         },
+        msg: null
       };
     },
     watch: {
@@ -144,25 +162,30 @@
         fetch('GET', `pages/${this.post.id}`, this.postLoaded);
       } else {
         //fresh Page
-        this.postLoaded({template: 'default'});
+        this.postLoaded({post:{template: 'default', content: {}}});
       }
     },
     methods: {
-      postLoaded: function(data) {
-        this.currentPost = data;
-        this.initialPost = data;
-        this.changeTemplate(data.template)
+      postLoaded: function(response) {
+
+        this.currentPost = response.post;
+        this.initialPost = JSON.stringify(response.post);
+        this.changeTemplate(response.post.template)
+
+        if(response.msg) {
+          this.msg = response.msg;
+        }
       },
       link: function(route, post) {
 
         // if you opened a new post, ask if he really wants to leave
-        if(this.post == undefined) {
+        if(!this.currentPost.id) {
           if(!confirm('You didn\'t save your changes, are you sure you want to continue?'))
             return;
 
         // if you changed something ask before leaving
         } else if(
-          JSON.stringify(this.currentPost) != JSON.stringify(this.initialPost)) 
+          JSON.stringify(this.currentPost) != this.initialPost) 
         {
           if(!confirm('You did some changes that are not saved yet, are you sure you want to continue?'))
             return;
@@ -173,14 +196,32 @@
       },
       changeTemplate: function(template){
         this.templateStructure = this.templates.find(x => x.id === template);
+      },
+      updatePost: function(){
+
+        if(!this.currentPost.slug)
+          alert('You need to define a URL.')
+
+        fetch('PUT', `pages/${this.post.id}`, this.postLoaded, this.currentPost); 
+      },
+      savePost: function(){
+
+        if(!this.currentPost.slug)
+          alert('You need to define a URL.')
+
+        fetch('POST', `pages/create`, this.postLoaded, this.currentPost); 
+      },
+      closeOverlay: function(){
+        this.msg = null;
       }
     },
     components: {
       AdditionalField,
+      CmsOption,
       Panel,
+      Overlay,
       Permalink,
       Sidebar,
-      CmsOption,
     }
   }
 </script>

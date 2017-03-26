@@ -13,15 +13,14 @@
 <template>
   <div>
     <strong>Permalink:</strong>
-    <span id="sample-permalink">
-      <a href="http://wiener-online.dev/?p=154210&amp;preview=true">
-        http://wiener-online.dev/2017/02/09/
-        <span id="editable-post-name">highlights-entlang-der-neuen-u1</span>/
-      </a>
-    </span>
-    <span id="edit-slug-buttons">
-      <button type="button" class="button">Bearbeiten</button>
-    </span>
+    <div v-show="!show">
+      <a :href="url + myslug">{{ url }}<span v-show="!show">{{ myslug }}</span>/</a>
+      <a class="button" @click="show = true">Bearbeiten</a>
+    </div>
+    <div v-show="show">
+        {{ url }}<input type="text" v-model="myslug" />
+        <a class="button" @click="changeSlug">Ok</a>
+    </div>
   </div>
 </template>
 
@@ -32,8 +31,29 @@
     /*
     * The component's data.
     */
+    props: ['slug', 'updateSlug'],
     data: function() {
-      return {};
+      return {
+        show: false,
+        myslug: ''
+      };
+    },
+    watch: {
+      "slug": function(newVal){
+        this.myslug = newVal;
+      }
+    },
+    computed: {
+      url: function() {
+        return window.location.protocol + "//" + window.location.hostname + "/";
+      }
+    },
+    methods: {
+      changeSlug: function() {
+        this.show = false;
+        const slug = encodeURI(this.myslug);
+        this.updateSlug(slug);
+      }
     }
   }
 </script>

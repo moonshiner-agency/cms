@@ -43,7 +43,7 @@
       </div>
     </td>
     <td>{{ post.author }}</td>
-    <td>{{ post.date }}</td>
+    <td>{{ post.published_at }}</td>
   </tr>
 </template>
 

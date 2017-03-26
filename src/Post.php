@@ -28,6 +28,24 @@ class Post extends Model
     protected $guarded = [];
 
     /**
+     * The guarded attributes on the model.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'author',
+        'published_at',
+        'main_content',
+        'content',
+        'title',
+        'slug',
+        'featured_image',
+        'post_status',
+        'visibility',
+        'template'
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -55,7 +73,14 @@ class Post extends Model
 
     public function getContentAttribute()
     {
-        return ($this->attributes['content'] ? $this->attributes['content'] : (object)[]);
+        $content = ($this->attributes['content'] ? $this->attributes['content'] : '{}');
+
+        return json_decode($content);
+    }
+
+    public function setContentAttribute($value)
+    {
+        $this->attributes['content'] = empty($value) ? NULL : json_encode($value);
     }
 
 }
