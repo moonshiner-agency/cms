@@ -5,7 +5,7 @@ namespace Moonshiner\Cms\Http\Controllers;
 use Illuminate\Http\Request;
 use Moonshiner\Cms\Post;
 
-class CmsController
+class BackendController
 {
     /**
      * Display a listing of the resource.

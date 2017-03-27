@@ -20,7 +20,6 @@ class Cms
         };
 
         $defaultOptions = [
-            'prefix' => 'moonshiner',
             'namespace' => '\Moonshiner\Cms\Http\Controllers',
         ];
 

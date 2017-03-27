@@ -44,38 +44,43 @@ class RouteRegistrar
         $this->router->group(['middleware' => ['web']], function ($router) {
             
             // get list of pages
-            $router->get('/config', [
-                'uses' => 'CmsController@config',
+            $router->get('moonshiner/config', [
+                'uses' => 'BackendController@config',
             ]);
 
             // get list of pages
-            $router->get('/pages', [
-                'uses' => 'CmsController@index',
+            $router->get('moonshiner/pages', [
+                'uses' => 'BackendController@index',
             ]);
 
             // get details of Page
-            $router->get('/pages/{post_id}', [
-                'uses' => 'CmsController@show',
+            $router->get('moonshiner/pages/{post_id}', [
+                'uses' => 'BackendController@show',
             ]);
 
             // create Page
-            $router->post('/pages/create', [
-                'uses' => 'CmsController@store',
+            $router->post('moonshiner/pages/create', [
+                'uses' => 'BackendController@store',
             ]);
 
             // update Page
-            $router->put('/pages/{post_id}', [
-                'uses' => 'CmsController@update',
+            $router->put('moonshiner/pages/{post_id}', [
+                'uses' => 'BackendController@update',
             ]);
 
             // delete Page
-            $router->delete('/pages/{post_id}', [
-                'uses' => 'CmsController@destroy',
+            $router->delete('moonshiner/pages/{post_id}', [
+                'uses' => 'BackendController@destroy',
             ]);
 
             // delete Page
-            $router->post('/image', [
-                'uses' => 'CmsController@saveimage',
+            $router->post('moonshiner/image', [
+                'uses' => 'BackendController@saveimage',
+            ]);
+
+            // delete Page
+            $router->get('/{slug}', [
+                'uses' => 'FrontendController@index',
             ]);
         });
     }
