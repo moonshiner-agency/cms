@@ -13,14 +13,14 @@
 <template>
   <div>
     <strong>Permalink:</strong>
-    <div v-show="!show">
+    <span v-show="!show">
       <a :href="url + myslug">{{ url }}<span v-show="!show">{{ myslug }}</span>/</a>
       <a class="button" @click="show = true">Bearbeiten</a>
-    </div>
-    <div v-show="show">
+    </span>
+    <span v-show="show">
         {{ url }}<input type="text" v-model="myslug" />
         <a class="button" @click="changeSlug">Ok</a>
-    </div>
+    </span>
   </div>
 </template>
 

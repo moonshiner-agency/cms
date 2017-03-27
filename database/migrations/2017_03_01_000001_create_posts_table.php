@@ -25,6 +25,7 @@ class CreatePostsTable extends Migration
             $table->string('post_status', 20)->default('published');
             $table->string('visibility', 20)->default('public');
             $table->string('template');
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 <template>
   <!-- START Rendering of Article Detail -->
   <article>
+    <a @click="link('list')" style="margin-left: 5%">Zur Übersicht</a>
     <div class="main">
       <h1 class="headline">Beitrag bearbeiten</h1>
       <a class="button primary" @click="link('create')">Erstellen</a>
@@ -36,7 +37,6 @@
 
     </div>
     <div class="sidebar">
-      
       <!-- START Settings Box -->
       <Panel
         headline="Publish">
@@ -48,6 +48,14 @@
             slot="input" 
             type="text"
             v-model="currentPost.author">
+        </CmsOption>
+
+        <CmsOption 
+          parameter="Category"
+          :status="currentPost.category">
+          <select v-model="currentPost.category" slot="input">
+            <option v-for="category in categories" :value="category">{{ category }}</option>
+          </select>
         </CmsOption>
 
         <CmsOption 
@@ -99,7 +107,10 @@
       <!-- START Template Box -->
       <Panel
         headline="Featured Image">
-        
+        <File 
+          :updatePath="newPath => { currentPost.featured_image = newPath }"
+          :path="currentPost.featured_image"
+          />
       </Panel>
       <!-- END Template Box -->
 
@@ -117,6 +128,7 @@
 
   import AdditionalField from '../components/AdditionalField';
   import CmsOption from '../components/Option';
+  import File from '../components/File';
   import Overlay from '../components/Overlay';
   import Permalink from '../components/Permalink';
   import Panel from '../components/Panel';
@@ -129,7 +141,7 @@
     /*
     * The component's data.
     */
-    props: ['post', 'templates', 'changeRoute'],
+    props: ['post', 'templates', 'categories', 'changeRoute'],
     data: function() {
       return {
         currentPost: {},
@@ -169,7 +181,7 @@
       postLoaded: function(response) {
 
         this.currentPost = response.post;
-        this.initialPost = JSON.stringify(response.post);
+        this.initialPost = JSON.parse(JSON.stringify(response.post));
         this.changeTemplate(response.post.template)
 
         if(response.msg) {
@@ -185,7 +197,7 @@
 
         // if you changed something ask before leaving
         } else if(
-          JSON.stringify(this.currentPost) != this.initialPost) 
+          JSON.stringify(this.currentPost) != JSON.stringify(this.initialPost)) 
         {
           if(!confirm('You did some changes that are not saved yet, are you sure you want to continue?'))
             return;
@@ -218,6 +230,7 @@
     components: {
       AdditionalField,
       CmsOption,
+      File,
       Panel,
       Overlay,
       Permalink,

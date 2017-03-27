@@ -8,6 +8,7 @@
       :post="activePost"
       :changeRoute="changeRoute"
       :templates="templates"
+      :categories="categories"
       >
       <!-- component changes when vm.currentView changes! -->
     </component>
@@ -34,6 +35,8 @@
         posts: [],
         //structure
         templates: [],
+        //structure
+        categories: [],
         //the active post
         activePost: null,
         //the Current Page displayed
@@ -46,12 +49,13 @@
     },
     mounted: function () {
       // get the posts
-      fetch('GET', 'templates', this.templatesLoaded);
+      fetch('GET', 'config', this.configLoaded);
     },
     methods: {
-      templatesLoaded: function(data) {
+      configLoaded: function(data) {
         // the callback for the templates loaded
-        this.templates = data;
+        this.templates = data.templates;
+        this.categories = data.categories;
       },
       changeRoute: function(route, post)
       {
@@ -98,6 +102,10 @@
     line-height: 24px;
     height: 24px;
     font-size: 12px;
+  }
+
+  img {
+    max-width: 100%;
   }
 
   a {

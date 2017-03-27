@@ -44,8 +44,8 @@ class RouteRegistrar
         $this->router->group(['middleware' => ['web']], function ($router) {
             
             // get list of pages
-            $router->get('/templates', [
-                'uses' => 'CmsController@templates',
+            $router->get('/config', [
+                'uses' => 'CmsController@config',
             ]);
 
             // get list of pages
@@ -71,6 +71,11 @@ class RouteRegistrar
             // delete Page
             $router->delete('/pages/{post_id}', [
                 'uses' => 'CmsController@destroy',
+            ]);
+
+            // delete Page
+            $router->post('/image', [
+                'uses' => 'CmsController@saveimage',
             ]);
         });
     }

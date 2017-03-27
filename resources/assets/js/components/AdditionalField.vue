@@ -38,8 +38,14 @@
             <div class="clear"></div>
         </div>
         <div v-else>
+            <File 
+                v-if="template.type == 'file'"
+                :updatePath="newPath => { updateValue(newPath) }"
+                :path="content"
+            />
             <input
                 ref="input"
+                v-else
                 v-bind:value="content"
                 v-on:input="updateValue($event.target.value)"/>
         </div>
@@ -48,6 +54,8 @@
 
 
 <script>
+
+  import File from './File';
 
   export default {
     /*
@@ -90,6 +98,9 @@
             content.push(freshContent);
             this.updateValue(content);
         }
+    },
+    components: {
+      File
     }
   }
 </script>

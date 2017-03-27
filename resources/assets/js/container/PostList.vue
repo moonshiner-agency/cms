@@ -6,11 +6,11 @@
       <h1 class="headline">Posts</h1>
       <a class="button primary" @click="changeRoute('create')">Add New</a>
       <hr />
-      <PostFilter />
+      <PostFilter :categories="categories" :filter="filterCategory => { filter = filterCategory }"/>
       <Search />
       <div class="clear"></div>
     </div>
-    <CmsTable :posts="posts" :changeRoute="changeRoute"></CmsTable>
+    <CmsTable :posts="filteredResults" :changeRoute="changeRoute"></CmsTable>
   </div>
   <!-- END Rendering of List -->
 </template>
@@ -27,12 +27,24 @@
     /*
     * The component's data.
     */
-    props: ['changeRoute'],
+    props: ['changeRoute', 'categories'],
     data: function() {
       return {
         // data
-        posts: []
+        posts: [],
+        filter: null
       };
+    },
+    computed: {
+      filteredResults: function () {
+
+        if(!this.filter || this.filter == 'all')
+          return this.posts;
+
+        return this.posts.filter((post) => {
+          return post.category == this.filter;
+        })
+      }
     },
     mounted: function () {
       // get the posts
@@ -43,6 +55,7 @@
 
         // the callback for the posts loaded
         this.posts = data;
+        this.allPosts = data;
       }
     },
     components: {

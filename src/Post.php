@@ -40,6 +40,7 @@ class Post extends Model
         'title',
         'slug',
         'featured_image',
+        'category',
         'post_status',
         'visibility',
         'template'
@@ -51,8 +52,6 @@ class Post extends Model
      * @var array
      */
     protected $casts = [
-        'scopes' => 'array',
-        'revoked' => 'bool',
     ];
 
     /**
@@ -61,7 +60,7 @@ class Post extends Model
      * @var array
      */
     protected $dates = [
-        'expires_at',
+        'published_at',
     ];
 
     /**

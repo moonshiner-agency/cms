@@ -12,9 +12,9 @@ class CmsController
      *
      * @return \Illuminate\Http\Response
      */
-    public function templates()
+    public function config()
     {
-        return response()->json(config('cms.templates'));
+        return response()->json(config('cms'));
     }
 
      /**
@@ -24,7 +24,7 @@ class CmsController
      */
     public function index()
     {
-        $posts = Post::all(['id', 'featured_image', 'title', 'author', 'published_at']);
+        $posts = Post::all(['featured_image', 'id', 'title', 'author', 'published_at', 'category']);
 
         return response()->json($posts);
     }
@@ -87,4 +87,29 @@ class CmsController
         $post = Post::findOrFail($post_id);
         return $post->delete();
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Moonshiner\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public function saveimage(Request $request)
+    {
+        $path = public_path()."/uploads/";
+        $filepath = md5($request->foto).".jpg";
+        $fullpath = $path . $filepath;
+
+        $image = substr($request->foto, strpos($request->foto, ",")+1);
+        $success = file_put_contents($fullpath, base64_decode($image)); 
+
+        if ($success === FALSE) {
+          if (!file_exists($path))
+            return response()->json(['msg' => "Saving image to folder failed. Folder ".$path." not exists."]);
+          
+          return response()->json(['msg' => "Saving image to folder failed. Please check write permission on " .$path]);
+        }
+
+        return response()->json(['path' => "/uploads/$filepath"]);
+    }  
 }
