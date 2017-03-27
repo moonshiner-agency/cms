@@ -77,7 +77,11 @@ Vue.component(
 
 After registering the components, make sure to run npm run dev to recompile your assets. Once you have recompiled your assets, you drop the backend component into your application's template and the fully functional CMS Backend gets rendered:
 
-`<cms-backend></cms-backend>`
+```
+<div id="app"></div>
+<script>window.csrfToken = "{{ csrf_token() }}"</script>
+<script src="/js/app.js"></script>
+```
 
 ## Frontend View Quickstart
 
@@ -85,30 +89,34 @@ The CMS System allows to select different templates per Detailpage. To enable th
 
 ```
 'templates' => [
-    'default' => [
-        'name' => 'Standardtemplate',
-        'path' => 'frontend.app',
-        'additional_fields' => [
-            'subheader' => 'string',
-            'count' => 'number',
-            'email' => 'email',
-            'gallery' => [
-                'image' => 'image'
+        [  
+            "id" => "default",
+            "name" => "DefaultTemplate",
+            "path" => "frontend.app",
+            "additional_fields" => [  
+                [  
+                   "name" => "subheader",
+                   "type" => "string"
+                ],
+                [  
+                   "name" => "quotes",
+                   "type" => [  
+                      [  
+                         "name" => "test",
+                         "type" => "string"
+                      ]
+                   ]
+                ]
             ]
         ]
     ]
-],
 ```
 
-The *Detailview* is used for rendering a single Content Element, in the additional fields the structure and additional fields for that template is defined. If one of the entries is an array, an unlimited number of entries is possible. This can be used for Lists or Galleries.
+The name of an additional field must be unique and the type can be a string or Array. If it is an array, an unlimited number of entries is possible. This can be used for Lists or Galleries.
 
 Those Views will be the Views, that you should change and adapt to your application. In those views you have a `$cms` Variable available to use. This variable will be filled with the content, in the backend.
 
 To get a better understanding for the structure of the $cms Array you can publish Example views for the Frontend rendering. 
-
-`php artisan vendor:publish --tag=cms-frontend`
-
-This will copy View files to resources/views/cms-frontend/ that are defined in the config file.
 
 ## Configuration
 

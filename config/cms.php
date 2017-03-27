@@ -1,6 +1,6 @@
 <?php
 
-echo json_encode([
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -13,18 +13,66 @@ echo json_encode([
     | Additional Field Type: text, string, integer, decimal, date, image, file
     */
 
+    'categories' => [
+      'blog',
+      'page'
+    ],
     'templates' => [
-        'default' => [
-            'name' => 'Standardtemplate',
-            'path' => 'frontend.app',
-            'additional_fields' => [
-                'subheader' => 'string',
-                'count' => 'number',
-                'email' => 'email',
-                'gallery' => [
-                    'image' => 'image'
+        [ 
+            "id" => "default",
+            "name" => "Standardtemplate",
+            "path" => "frontend.app",
+            "additional_fields" => [  
+                [  
+                   "name" => "subheader",
+                   "type" => "string"
+                ],
+                [  
+                   "name" => "count",
+                   "type" => "number"
+                ],
+                [  
+                   "name" => "bild",
+                   "type" => "file"
+                ],
+                [  
+                   "name" => "gallery",
+                   "type" => [  
+                      [  
+                         "name" => "image",
+                         "type" => "file"
+                      ],
+                      [  
+                         "name" => "description",
+                         "type" => "string"
+                      ],
+                      [  
+                         "name" => "content",
+                         "type" => "string"
+                      ]
+                   ]
                 ]
             ]
+        ],
+        [  
+            "id" => "special",
+            "name" => "SpecialTemplate",
+            "path" => "frontend.app",
+            "additional_fields" => [  
+            [  
+               "name" => "quotes",
+               "type" => [  
+                  [  
+                     "name" => "test",
+                     "type" => "string"
+                  ]
+               ]
+            ],
+            [  
+               "name" => "subheader",
+               "type" => "string"
+            ]
+            ]
         ]
-    ],
-]);
+    ]
+];
