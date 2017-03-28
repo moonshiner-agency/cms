@@ -120,6 +120,4 @@ To get a better understanding for the structure of the $cms Array you can publis
 
 ## Configuration
 
-
-
-
+(to be done)
