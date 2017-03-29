@@ -8,9 +8,9 @@ It is tough to add CMS functionality to an existing Laravel Application. It feel
 
 To get started, install Passport via the Composer package manager:
 
-`composer require moonshiner-agency/cms`
+`composer config repositories.moonshiner-cms vcs https://github.com/moonshiner-agency/cms`
 
-Next, register the Laravel CMS service provider in the providers array of your config/app.php configuration file:
+Next, add the line `"moonshiner/cms": "master@dev"` and run a composer update. Next register the Laravel CMS service provider in the providers array of your config/app.php configuration file:
 
 `Moonshiner\Cms\CmsServiceProvider::class`
 
@@ -22,7 +22,7 @@ To publish the config file for the CMS do an vendor:publish
 
 `php artisan vendor:publish --provider="Moonshiner\Cms\CmsServiceProvider"`
 
-You should call the Cms::routes method within the boot method of your RouteServiceProvider. This method will add the CMS Pieces necessary to render the correct content on one view.
+You should put the Cms::routes method within the boot method of your RouteServiceProvider. This method will add the CMS Pieces necessary to render the correct content on one view.
 
 ```<?php
 
@@ -60,22 +60,22 @@ class RouteServiceProvider extends ServiceProvider
 
 ## Backend View Quickstart
 
-In order to use the Cms Vue components, you must be using the Vue JavaScript framework. The Passport ships with a JSON API that you may use to allow your users to CRUD categories, contents and content meta. It also shippes with a fully functional Vue backend to setup the functionality very easily.
+In order to use the Cms Vue components, you must be using the Vue JavaScript framework. The Passport ships with a JSON API that you may use to allow your users to CRUD posts. It also shippes with a fully functional Vue backend to setup the functionality very easily.
 
 To publish the Passport Vue components, use the vendor:publish Artisan command:
 
-`php artisan vendor:publish --provider="Moonshiner\Cms\CmsServiceProvider"`
+`todo`
 
 The published components will be placed in your resources/assets/js/components directory. Once the components have been published, you should register them in your  resources/assets/js/app.js file:
 
 ```
 Vue.component(
     'cms-backend',
-    require('./components/laravel-cms/Application.vue')
+    require('./components/laravel-cms/CmsBackend.vue')
 );
 ```
 
-After registering the components, make sure to run npm run dev to recompile your assets. Once you have recompiled your assets, you drop the backend component into your application's template and the fully functional CMS Backend gets rendered:
+After registering the components, make sure to run npm run dev to recompile your assets. Once you have recompiled your assets, you drop the backend component into your application's template and the fully functional CMS Backend gets rendered - for tinymce make sure that tinymce is a valid variable in the window namespace:
 
 ```
 <div id="app"></div>
@@ -96,14 +96,14 @@ The CMS System allows to select different templates per Detailpage. To enable th
             "additional_fields" => [  
                 [  
                    "name" => "subheader",
-                   "type" => "string"
+                   "type" => "text"
                 ],
                 [  
                    "name" => "quotes",
                    "type" => [  
                       [  
                          "name" => "test",
-                         "type" => "string"
+                         "type" => "file"
                       ]
                    ]
                 ]
@@ -120,6 +120,4 @@ To get a better understanding for the structure of the $cms Array you can publis
 
 ## Configuration
 
-
-
-
+(to be done)

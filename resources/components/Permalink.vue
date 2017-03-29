@@ -14,7 +14,7 @@
   <div>
     <strong>Permalink:</strong>
     <span v-show="!show">
-      <a :href="url + myslug">{{ url }}<span v-show="!show">{{ myslug }}</span>/</a>
+      <a :href="url + myslug" target="_blank">{{ url }}<span v-show="!show">{{ myslug }}</span>/</a>
       <a class="button" @click="show = true">Bearbeiten</a>
     </span>
     <span v-show="show">

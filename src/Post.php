@@ -3,6 +3,7 @@
 namespace Moonshiner\Cms;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Post extends Model
 {
@@ -35,6 +36,7 @@ class Post extends Model
     protected $fillable = [
         'author',
         'published_at',
+        'teaser_content',
         'main_content',
         'content',
         'title',
@@ -80,6 +82,31 @@ class Post extends Model
     public function setContentAttribute($value)
     {
         $this->attributes['content'] = empty($value) ? NULL : json_encode($value);
+    }
+
+    public function scopePublished($query)
+    {
+      return $query->public()->where('published_at', '<', Carbon::now())->where('post_status', 'published');
+    }
+
+    public function scopeDraft($query)
+    {
+      return $query->where('post_status', 'draft');
+    }
+
+    public function scopePrivate($query)
+    {
+      return $query->where('visibility', 'private');
+    }
+
+    public function scopePublic($query)
+    {
+      return $query->where('visibility', 'public');
+    }
+
+    public function scopePublishedLatest($query)
+    {
+      return $query->published()->orderBy('published_at', 'desc');
     }
 
 }

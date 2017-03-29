@@ -24,7 +24,7 @@ class BackendController
      */
     public function index()
     {
-        $posts = Post::all(['featured_image', 'id', 'title', 'author', 'published_at', 'category']);
+        $posts = Post::all(['featured_image', 'id', 'title', 'author', 'published_at', 'category', 'slug']);
 
         return response()->json($posts);
     }
@@ -85,7 +85,7 @@ class BackendController
     public function destroy($post_id)
     {
         $post = Post::findOrFail($post_id);
-        return $post->delete();
+        return response()->json($post->delete());
     }
 
     /**
@@ -94,20 +94,45 @@ class BackendController
      * @param  Moonshiner\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function saveimage(Request $request)
+    public function savefile(Request $request)
     {
+        
+        $parts = explode(',', $request->file);
+        $file = $parts[1];
+        $file_type = $parts[0];
+
+        switch($file_type) {
+            case 'data:image/jpeg;base64':
+                $suffix = '.jpg';
+                break;
+            case 'data:image/png;base64':
+                $suffix = '.png';
+                break;
+            case 'data:image/svg+xml;base64':
+                $suffix = '.svg';
+                break;
+            case 'data:image/gif;base64':
+                $suffix = '.gif';
+                break;
+            case 'data:application/pdf;base64':
+                $suffix = '.pdf';
+                break;
+
+            default:
+                return response()->json(['msg' => ' Wrong Data Format: '.$parts[0]]);
+        }
+
         $path = public_path()."/uploads/";
-        $filepath = md5($request->foto).".jpg";
+        $filepath = md5($request->file).$suffix;
         $fullpath = $path . $filepath;
 
-        $image = substr($request->foto, strpos($request->foto, ",")+1);
-        $success = file_put_contents($fullpath, base64_decode($image)); 
+        $success = file_put_contents($fullpath, base64_decode($file)); 
 
         if ($success === FALSE) {
           if (!file_exists($path))
-            return response()->json(['msg' => "Saving image to folder failed. Folder ".$path." not exists."]);
+            return response()->json(['msg' => "Saving file to folder failed. Folder ".$path." not exists."]);
           
-          return response()->json(['msg' => "Saving image to folder failed. Please check write permission on " .$path]);
+          return response()->json(['msg' => "Saving file to folder failed. Please check write permission on " .$path]);
         }
 
         return response()->json(['path' => "/uploads/$filepath"]);

@@ -43,6 +43,11 @@
                 :updatePath="newPath => { updateValue(newPath) }"
                 :path="content"
             />
+            <Editor
+                :id="template.name + Math.random().toString().substring(2)"
+                v-else-if="template.type == 'longtext'"
+                v-bind:value="content"
+                v-on:input="newContent => { updateValue(newContent) }"/>
             <input
                 ref="input"
                 v-else
@@ -55,6 +60,7 @@
 
 <script>
 
+  import Editor from './Editor';
   import File from './File';
 
   export default {
@@ -100,7 +106,8 @@
         }
     },
     components: {
-      File
+      Editor,
+      File,
     }
   }
 </script>

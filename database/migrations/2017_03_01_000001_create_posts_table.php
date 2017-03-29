@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('author')->nullable();
             $table->dateTime('published_at')->default(date("Y-m-d H:i:s"));
+            $table->text('teaser_content')->nullable();
             $table->text('main_content')->nullable();
             $table->text('content')->nullable();
             $table->string('title');

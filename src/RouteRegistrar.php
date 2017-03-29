@@ -74,14 +74,14 @@ class RouteRegistrar
             ]);
 
             // delete Page
-            $router->post('moonshiner/image', [
-                'uses' => 'BackendController@saveimage',
+            $router->post('moonshiner/file', [
+                'uses' => 'BackendController@savefile',
             ]);
 
             // delete Page
-            $router->get('/{slug}', [
+            $router->get('/{slug?}', [
                 'uses' => 'FrontendController@index',
-            ]);
+            ])->where('slug', '(.*)');
         });
     }
 }

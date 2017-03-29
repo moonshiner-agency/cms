@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://cms.dev/moonshiner/';
+export const BASE_URL = document.location.protocol + '//' + document.location.host + '/moonshiner/';
 
 export function fetch(type, uri, callback, param) {
 

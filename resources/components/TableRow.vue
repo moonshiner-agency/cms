@@ -39,7 +39,7 @@
     <td>
       {{ post.title }}
       <div class="options">
-        <a @click="changeRoute('edit', post)">Edit</a> | <a href="#" class="trash">Trash</a> | <a :href="post.slug" target="_blank">View</a>
+        <a @click="changeRoute('edit', post)">Edit</a> | <a @click="deletePost(post.id)" class="trash">Trash</a> | <a :href="'/' + post.slug" target="_blank">View</a>
       </div>
     </td>
     <td>{{ post.author }}</td>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import {fetch} from '../config';
 
   export default {
     /*
@@ -56,6 +57,16 @@
     props: ['post', 'changeRoute'],
     data: function() {
       return {};
+    },
+    methods: {      
+      deleteSuccess: function() {
+          window.location.reload();
+      },
+      deletePost : function(id) {
+        if (confirm('Do you want to delete this post?')) {
+          fetch('DELETE', `pages/`+id , this.deleteSuccess);          
+        }
+      }
     }
   }
 </script>

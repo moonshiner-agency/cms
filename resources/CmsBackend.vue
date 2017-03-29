@@ -84,7 +84,7 @@
 </script>
 
 <style>
-  input, select, textarea, .button {
+  .backend input, .backend select, .backend textarea, .backend .button {
     box-sizing: border-box;
     border: 1px solid #ddd;
 
@@ -104,17 +104,17 @@
     font-size: 12px;
   }
 
-  img {
+  .backend img {
     max-width: 100%;
   }
 
-  a {
+  .backend a {
     text-decoration: underline;
     color: blue;
   }
 
   /*cms-Button*/
-  .button {
+  .backend .button {
     display: inline-block;
     text-decoration: none;
     padding: 0 10px 1px;
@@ -130,14 +130,14 @@
 
     cursor: pointer;
   }
-  .button:hover {
+  .backend .button:hover {
     border-color: #008EC2;
     background: #00a0d2;
     color: #fff;
   }
 
   /*Button*/
-  .button.primary {
+  .backend .button.primary {
     position: relative;
     top: -3px;
     border: 1px solid #ccc;
@@ -151,7 +151,7 @@
     height: 28px;
     font-size: 14px;
   }
-  .button.primary:hover {
+  .backend .button.primary:hover {
     border-color: #008EC2;
     background: #00a0d2;
     color: #fff;
@@ -159,16 +159,16 @@
 
   
 
-  .right {
+  .backend .right {
     float:right;
   }
 
-  .clear {
+  .backend .clear {
     clear: both;
     float:none;
   }
 
-  h1.headline {
+  .backend h1.headline {
     color: #23282d;
 
     font-size: 23px;
@@ -181,7 +181,7 @@
     margin-right: 5px;
   }
 
-  hr {
+  .backend hr {
     border: 0;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #fafafa;

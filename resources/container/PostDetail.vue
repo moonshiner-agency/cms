@@ -4,7 +4,8 @@
   <article>
     <a @click="link('list')" style="margin-left: 5%">Zur Übersicht</a>
     <div class="main">
-      <h1 class="headline">Beitrag bearbeiten</h1>
+      <h1 class="headline" v-if="post">Edit Post</h1>
+      <h1 class="headline" v-else="post">Create Post</h1>
       <a class="button primary" @click="link('create')">Erstellen</a>
       <hr />
       <div class="post">
@@ -12,7 +13,9 @@
           <input type="text" v-model="currentPost.title">
         </div>
         <Permalink :slug="currentPost.slug" :updateSlug="newSlug => { currentPost.slug = newSlug }" />
-        <textarea v-model="currentPost.main_content"></textarea>
+        <Editor v-model="currentPost.main_content"></Editor>
+        <h2>Teaser</h2>
+        <textarea v-model="currentPost.teaser_content" class="teaser-content"></textarea>
       </div>
 
       <template v-if="templateStructure != null">
@@ -86,7 +89,7 @@
         </CmsOption>
 
         <template slot="footer">
-          <a href="#" class="trash">Move to trash</a> 
+          <a @click="deletePost" class="trash">Move to trash</a> 
           <a class="button primary right" @click="updatePost" v-show="post">Update</a>
           <a class="button primary right" @click="savePost" v-show="!post">Speichern</a>
           <div class="clear"></div>
@@ -127,12 +130,12 @@
 <script>
 
   import AdditionalField from '../components/AdditionalField';
+  import Editor from '../components/Editor';
   import CmsOption from '../components/Option';
   import File from '../components/File';
   import Overlay from '../components/Overlay';
   import Permalink from '../components/Permalink';
   import Panel from '../components/Panel';
-  import Sidebar from './Sidebar';
 
 
   import {fetch} from '../config';
@@ -198,10 +201,10 @@
         // if you changed something ask before leaving
         } else if(
           JSON.stringify(this.currentPost) != JSON.stringify(this.initialPost)) 
-        {
-          if(!confirm('You did some changes that are not saved yet, are you sure you want to continue?'))
-            return;
-        }
+          {
+            if(!confirm('You did some changes that are not saved yet, are you sure you want to continue?'))
+              return;
+          }
 
         // change to new page
         this.changeRoute(route, post);
@@ -211,17 +214,31 @@
       },
       updatePost: function(){
 
-        if(!this.currentPost.slug)
-          alert('You need to define a URL.')
+        if(!this.currentPost.slug) {
+          alert('You need to define a URL.');
+          return;
+        }
 
         fetch('PUT', `pages/${this.post.id}`, this.postLoaded, this.currentPost); 
       },
       savePost: function(){
 
-        if(!this.currentPost.slug)
+        if(!this.currentPost.slug) {
           alert('You need to define a URL.')
+          return;
+        }
 
         fetch('POST', `pages/create`, this.postLoaded, this.currentPost); 
+      },
+      deleteSuccess: function() {
+          this.changeRoute('list');
+      },
+      deletePost : function() {
+
+        if (!confirm('Do you want to delete this post?'))
+          return;
+
+        fetch('DELETE', `pages/` + this.currentPost.id , this.deleteSuccess);          
       },
       closeOverlay: function(){
         this.msg = null;
@@ -229,12 +246,12 @@
     },
     components: {
       AdditionalField,
+      Editor,
       CmsOption,
       File,
       Panel,
       Overlay,
       Permalink,
-      Sidebar,
     }
   }
 </script>
@@ -258,9 +275,14 @@
       background-color: #fff;
     }
 
-    textarea {
+    textarea.main-content {
       width: 100%;
       min-height: 300px;
+    }
+
+    textarea.teaser-content {
+      width: 100%;
+      min-height: 100px;
     }
 
     .main {
