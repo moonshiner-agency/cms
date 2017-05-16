@@ -14,13 +14,7 @@ class Post extends Model
      */
     protected $table = 'moonshinecms_posts';
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
-
+   
     /**
      * The guarded attributes on the model.
      *
@@ -54,6 +48,7 @@ class Post extends Model
      * @var array
      */
     protected $casts = [
+        'content' => 'array'
     ];
 
     /**
@@ -64,25 +59,6 @@ class Post extends Model
     protected $dates = [
         'published_at',
     ];
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = true;
-
-    public function getContentAttribute()
-    {
-        $content = ($this->attributes['content'] ? $this->attributes['content'] : '{}');
-
-        return json_decode($content);
-    }
-
-    public function setContentAttribute($value)
-    {
-        $this->attributes['content'] = empty($value) ? NULL : json_encode($value);
-    }
 
     public function scopePublished($query)
     {
@@ -108,5 +84,6 @@ class Post extends Model
     {
       return $query->published()->orderBy('published_at', 'desc');
     }
+
 
 }

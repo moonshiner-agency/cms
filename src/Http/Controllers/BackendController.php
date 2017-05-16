@@ -4,6 +4,7 @@ namespace Moonshiner\Cms\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Moonshiner\Cms\Post;
+use Moonshiner\Cms\Parser\ConfigParser; 
 
 class BackendController
 {
@@ -14,7 +15,9 @@ class BackendController
      */
     public function config()
     {
-        return response()->json(config('cms'));
+        $config = (new ConfigParser(config('cms')))->build(); 
+
+        return $config;
     }
 
      /**
@@ -29,27 +32,19 @@ class BackendController
         return response()->json($posts);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $post_id)
+    
+    public function show(Request $request, Post $post)
     {
         $output = [];
-        $output['post'] = Post::findOrFail($post_id);
-        return response()->json($output);
+
+        $output['post'] = $post; 
+        return $output;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
+
         $post = Post::create($request->all());
 
         $output['post'] = $post;
@@ -65,9 +60,9 @@ class BackendController
      * @param  Moonshiner\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $post_id)
+    public function update(Request $request, Post $post)
     {
-        $post = Post::findOrFail($post_id);
+        $post = $post;
         $post->update($request->all());
 
         $output['post'] = $post;
@@ -82,18 +77,15 @@ class BackendController
      * @param  Moonshiner\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($post_id)
+    public function destroy(Post $post)
     {
-        $post = Post::findOrFail($post_id);
-        return response()->json($post->delete());
+        $output['msg'] = 'Erfolgreich gelöscht'; 
+        $post->delete(); 
+
+        return response()->json($post);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Moonshiner\Post $post
-     * @return \Illuminate\Http\Response
-     */
+   
     public function savefile(Request $request)
     {
         
