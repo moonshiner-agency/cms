@@ -13,14 +13,19 @@ class CmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
+        // if(!$this->app->runningInConsole()) return; 
             
-            $this->registerMigrations();
+        $this->registerMigrations();
 
-            $this->publishes([
-                __DIR__ . '/../config/cms.php' => config_path('cms.php'),
-            ]);
-        }
+        $this->publishes([
+            __DIR__ . '/../config/cms.php' => config_path('cms.php'),
+        ]);
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');     
+         $this->publishes([
+            __DIR__.'/../resources/assets' => resource_path('vendor/moonshine'),
+        ], 'public');
+
+
     }
 
     /**

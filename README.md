@@ -18,45 +18,13 @@ The CMS service provider registers its own database migration directory with the
 
 `php artisan migrate`
 
-To publish the config file for the CMS do an vendor:publish
+To publish all files needed for the CMS run `vendor:publish` or 
 
 `php artisan vendor:publish --provider="Moonshiner\Cms\CmsServiceProvider"`
 
-You should put the Cms::routes method within the boot method of your RouteServiceProvider. This method will add the CMS Pieces necessary to render the correct content on one view.
+This will copy Vue files to `resources/vendor/moonshine` where all files responsible for handling the CMS ui.
 
-```<?php
-
-<?php
-
-namespace App\Providers;
-
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-
-class RouteServiceProvider extends ServiceProvider
-{
-    /**
-     * This namespace is applied to your controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
-     *
-     * @var string
-     */
-    protected $namespace = 'App\Http\Controllers';
-    
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        //Set the backend Routes
-        \Moonshiner\Cms\Cms::routes();
-    }
-```
+Our package automatically loads routes needed for CMS CRUD operations.
 
 ## Backend View Quickstart
 
@@ -66,21 +34,30 @@ To publish the Passport Vue components, use the vendor:publish Artisan command:
 
 `todo`
 
-The published components will be placed in your resources/assets/js/components directory. Once the components have been published, you should register them in your  resources/assets/js/app.js file:
+The published components will be placed in your `resources/vendor/moonshine` directory. Once the components have been published, you should register them in your  resources/assets/js/app.js file:
 
 ```
 Vue.component(
     'cms-backend',
-    require('./components/laravel-cms/CmsBackend.vue')
+    require('../../vendor/moonshine/js/CmsBackend.vue')
 );
 ```
 
 After registering the components, make sure to run npm run dev to recompile your assets. Once you have recompiled your assets, you drop the backend component into your application's template and the fully functional CMS Backend gets rendered - for tinymce make sure that tinymce is a valid variable in the window namespace:
 
+
+
+
 ```
 <div id="app"></div>
-<script>window.csrfToken = "{{ csrf_token() }}"</script>
+
 <script src="/js/app.js"></script>
+```
+To safely dispatch requests we also need the csrf-token tag somewhere in the html head section. This tag is also used by the standard laravel bootstrap to enable csrf for axios. You'll find more information here https://laravel.com/docs/csrf#csrf-x-csrf-token
+
+
+```
+<meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
 ## Frontend View Quickstart
