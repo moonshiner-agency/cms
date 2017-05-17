@@ -27,9 +27,10 @@ class CreatePostsTable extends Migration
             $table->string('visibility', 20)->default('public');
             $table->string('template');
             $table->string('category')->nullable();
-            $table->integer('parent_id')->default(null); 
 
-            $table->foreign('parent_id')->references('id')->on('moonshinecms_posts'); 
+            $table->integer('parent_id')->unsigned()->nullable()->default(null);
+            $table->foreign('parent_id')->references('id')->on('moonshinecms_posts')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
