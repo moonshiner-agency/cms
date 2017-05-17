@@ -10,11 +10,11 @@ To get started, install Moonshine via the Composer package manager:
 
 `composer config repositories.moonshiner-cms vcs https://github.com/moonshiner-agency/cms`
 
-Next, add the line `"moonshiner/cms": "master@dev"` and run a composer update. Next register the Laravel CMS service provider in the providers array of your config/app.php configuration file:
+Next, add the line `"moonshiner/cms": "master@dev"` and run `composer update`. Next register the Laravel CMS service provider in the providers array of your config/app.php configuration file:
 
 `Moonshiner\Cms\CmsServiceProvider::class`
 
-The CMS service provider registers its own database migration directory with the framework, so you should migrate your database after registering the provider. The CMS migrations will create the tables your application needs to store Categories, Content and Content Meta:
+The CMS service provider registers its own database migration directory with the framework, so you should migrate your database after registering the provider. The CMS migrations will create the table your application needs to store Content and Content Meta:
 
 `php artisan migrate`
 
