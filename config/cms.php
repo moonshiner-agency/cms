@@ -35,8 +35,7 @@ return [
             "additional_fields" => [  
                 [  
                    "name" => "subheader",
-                   "type" => "string",
-                   "validation" => 
+                   "type" => "string"
                 ],
                 [  
                    "name" => "count",
