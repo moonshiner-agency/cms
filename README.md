@@ -6,7 +6,7 @@ It is tough to add CMS functionality to an existing Laravel Application. It feel
 
 ## Installation
 
-To get started, install Passport via the Composer package manager:
+To get started, install Moonshine via the Composer package manager:
 
 `composer config repositories.moonshiner-cms vcs https://github.com/moonshiner-agency/cms`
 
@@ -29,10 +29,6 @@ Our package automatically loads routes needed for CMS CRUD operations.
 ## Backend View Quickstart
 
 In order to use the Cms Vue components, you must be using the Vue JavaScript framework. The Passport ships with a JSON API that you may use to allow your users to CRUD posts. It also shippes with a fully functional Vue backend to setup the functionality very easily.
-
-To publish the Passport Vue components, use the vendor:publish Artisan command:
-
-`todo`
 
 The published components will be placed in your `resources/vendor/moonshine` directory. Once the components have been published, you should register them in your  resources/assets/js/app.js file:
 
