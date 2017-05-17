@@ -17,22 +17,33 @@ return [
       'blog',
       'page'
     ],
+    'statics' => [
+       [  
+         "name" => "meta-title",
+         "type" => "string"
+      ],[  
+         "name" => "meta-description",
+         "type" => "string"
+      ],
+    ], 
     'templates' => [
         [ 
             "id" => "default",
-            "name" => "Standardtemplate",
-            "path" => "frontend.app",
+            "name" => "Starter",
+            "path" => "starter"
+            ,
             "additional_fields" => [  
                 [  
                    "name" => "subheader",
-                   "type" => "string"
+                   "type" => "string",
+                   "validation" => 
                 ],
                 [  
                    "name" => "count",
                    "type" => "number"
                 ],
                 [  
-                   "name" => "bild",
+                   "name" => "picture",
                    "type" => "file"
                 ],
                 [  
@@ -57,7 +68,7 @@ return [
         [  
             "id" => "special",
             "name" => "SpecialTemplate",
-            "path" => "frontend.app",
+            "path" => "special",
             "additional_fields" => [  
             [  
                "name" => "quotes",
