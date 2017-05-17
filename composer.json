@@ -3,17 +3,15 @@
     "description": "Finally a good CMS for the Laravel Framework.",
     "keywords": ["cms", "laravel"],
     "license": "MIT",
-    "homepage": "https://cms.com",
+    "homepage": "https://github.com/moonshiner-agency",
     "support": {
-        "issues": "https://github.com/moonshiner/cms/issues",
-        "source": "https://github.com/moonshiner/cms"
+        "issues": "https://github.com/moonshiner-agency/cms/issues",
+        "source": "https://github.com/moonshiner-agency/cms"
     },
-    "authors": [
-        {
-            "name": "Florian Bauer",
-            "email": "florian@moonshiner.at"
-        }
-    ],
+    "authors": [{
+        "name": "Florian Bauer",
+        "email": "florian@moonshiner.at"
+    }],
     "require": {
         "php": ">=5.6.4",
         "illuminate/database": "~5.3",

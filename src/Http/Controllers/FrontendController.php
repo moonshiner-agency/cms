@@ -14,7 +14,7 @@ class FrontendController
      */
     public function index($slug)
     {
-        $post = Post::whereSlug($slug)->first();
+        $post = Post::where('slug', $slug)->first();
 
         if(!$post)
             abort(404);
@@ -27,7 +27,6 @@ class FrontendController
     private function templateForId($id) {
 
         $array = config('cms.templates');
-
         foreach ($array as $key => $val) {
            if ($val['id'] === $id) {
                return $val['path'];

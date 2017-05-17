@@ -5,7 +5,7 @@ namespace Moonshiner\Cms\Http\Controllers;
 use Illuminate\Http\Request;
 use Moonshiner\Cms\Post;
 use Moonshiner\Cms\Parser\ConfigParser; 
-
+use File; 
 class BackendController
 {
     /**
@@ -114,19 +114,20 @@ class BackendController
                 return response()->json(['msg' => ' Wrong Data Format: '.$parts[0]]);
         }
 
+
         $path = public_path()."/uploads/";
         $filepath = md5($request->file).$suffix;
         $fullpath = $path . $filepath;
-
+        if(!file_exists($path)){
+            File::makeDirectory($path, 0777, true, true);
+        }
         $success = file_put_contents($fullpath, base64_decode($file)); 
-
         if ($success === FALSE) {
           if (!file_exists($path))
             return response()->json(['msg' => "Saving file to folder failed. Folder ".$path." not exists."]);
           
           return response()->json(['msg' => "Saving file to folder failed. Please check write permission on " .$path]);
         }
-
         return response()->json(['path' => "/uploads/$filepath"]);
     }  
 }
