@@ -33,5 +33,5 @@ class FrontendController
            }
         }
        return null;
-    } 
+    }
 }
