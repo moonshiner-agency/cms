@@ -16,7 +16,6 @@ class Checkpage
      */
     public function handle($request, Closure $next)
     {
-
         if(!$request->isMethod('get')){
           return $next($request);
         }
@@ -26,8 +25,17 @@ class Checkpage
         }
 
         $template = $this->templateForId($post->template);
-return $next($request);
         return response(view($template, compact('post')));
+    }
+      private function templateForId($id) {
+
+        $array = config('cms.templates');
+        foreach ($array as $key => $val) {
+           if ($val['id'] === $id) {
+               return $val['path'];
+           }
+        }
+       return null;
     }
 
 }
