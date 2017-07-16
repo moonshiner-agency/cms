@@ -5,14 +5,14 @@ namespace Moonshiner\Cms;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Post extends Model
+class Tag extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'moonshinecms_posts';
+    protected $table = 'moonshinecms_tags';
 
    
     /**
@@ -85,9 +85,10 @@ class Post extends Model
       return $query->published()->orderBy('published_at', 'desc');
     }
 
-    public function tags()
+    public function posts()
     {
-      return $this->hasMany('Moonshiner\Cms\Tag','post_id','tag_id');
+        return $this->belongsToMany('Moonshiner\Cms\Post', 'moonshinecms_post_tag', 'post_id', 'tag_id');
+
     }
 
 

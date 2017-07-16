@@ -4,7 +4,7 @@ namespace Moonshiner\Cms\Http\Middleware;
 
 use Closure;
 use Moonshiner\Cms\Post;
-
+use View; 
 class Checkpage
 {
     /**
@@ -19,12 +19,17 @@ class Checkpage
         if(!$request->isMethod('get')){
           return $next($request);
         }
-        $post = Post::where('slug', $request->segment(1))->first();
+        $post = Post::where('slug', $request->path())->first();
         if(!$post){
           return $next($request);
         }
-
         $template = $this->templateForId($post->template);
+
+        if(!View::exists($template)){
+          return $next($request);
+        }
+
+        
         return response(view($template, compact('post')));
     }
       private function templateForId($id) {
