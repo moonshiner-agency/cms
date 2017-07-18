@@ -87,7 +87,7 @@ class Post extends Model
 
     public function tags()
     {
-      return $this->hasMany('Moonshiner\Cms\Tag','post_id','tag_id');
+        return $this->belongsToMany('Moonshiner\Cms\Tag','moonshinecms_post_tag','post_id','tag_id');
     }
 
 

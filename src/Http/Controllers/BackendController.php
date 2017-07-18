@@ -36,8 +36,15 @@ class BackendController
     public function show(Request $request, Post $post)
     {
         $output = [];
+        $output['post'] = $post->load('tags')->toArray(); 
+        
+        if($post->content == null){
+            $additionalFields = collect((new ConfigParser(config('cms')))->build()['templates'])->where('id', $post->template)->first()['additional_fields']; 
+            foreach ($additionalFields as $key => $value) {
+                $output['post']['content'][$value['name']] = ''; 
+            }
+        }
 
-        $output['post'] = $post; 
         return $output;
     }
 
@@ -45,7 +52,22 @@ class BackendController
     public function store(Request $request)
     {
 
+        if(Post::where('slug','=',$request->slug)->count() > 0) {
+            $output['msg'] = 'Duplicate url. Please try with another url.';
+            $output['post'] = $request->all();
+            // Returning without saving post
+            return response()->json($output);
+        } 
+
         $post = Post::create($request->all());
+
+         if(isset($request->tags)):
+            $tags = [];
+            foreach($request->tags as $tag) {
+                $tags[]['tag_id'] = $tag['id'];
+            }
+            $post->tags()->sync($tags);
+        endif;
 
         $output['post'] = $post;
         $output['msg'] = 'Erfolgreich gespeichert.';
@@ -62,8 +84,27 @@ class BackendController
      */
     public function update(Request $request, Post $post)
     {
-        $post = $post;
+        $post = Post::findOrFail($post_id);
+        if($post->slug != $request->slug) {
+            if(Post::where('slug','=',$request->slug)->count() > 0) {
+                $output['msg'] = 'Duplicate url. Please try with another url.';
+                $output['post'] = $request->all();
+                
+                // Returning without saving post
+                return response()->json($output);
+            }  
+        }
+
         $post->update($request->all());
+
+        if(isset($request->tags)):
+            $tags = [];
+            foreach($request->tags as $tag) {
+                $tags[]['tag_id'] = $tag['id'];
+            }
+            $post->tags()->sync($tags);
+        endif;
+
 
         $output['post'] = $post;
         $output['msg'] = 'Update erfolgreich';
