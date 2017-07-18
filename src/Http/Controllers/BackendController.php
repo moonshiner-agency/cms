@@ -84,7 +84,7 @@ class BackendController
      */
     public function update(Request $request, Post $post)
     {
-        $post = Post::findOrFail($post_id);
+        
         if($post->slug != $request->slug) {
             if(Post::where('slug','=',$request->slug)->count() > 0) {
                 $output['msg'] = 'Duplicate url. Please try with another url.';
