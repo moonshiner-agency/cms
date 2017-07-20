@@ -64,7 +64,10 @@ class Post extends Model
     {
       return $query->public()->where('published_at', '<', Carbon::now())->where('post_status', 'published');
     }
-
+    public function scopeActive($query)
+    {
+      return $query->where('published_at', '<', Carbon::now())->where('category','=','blog')->where('post_status', 'published');
+    }
     public function scopeDraft($query)
     {
       return $query->where('post_status', 'draft');
