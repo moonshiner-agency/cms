@@ -15,8 +15,7 @@ class CreateMoonshinerTagsTable extends Migration
     {
          Schema::create('moonshinecms_tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('post_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->string('name');
             $table->timestamps();
 
         });
